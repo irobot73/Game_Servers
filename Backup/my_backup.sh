@@ -1,8 +1,11 @@
-#!/bin/sh
+#!/bin/bash
+
+#set -x
+#shopt -s extglob # enabled for extended pattern matching operators to be recognised.
 
 BACKUP_PATH=/data/backup
-NUM_DAYS_KEEP=3
 FILE_TYPE="D" # Use '(D)AY' or '(T)IMESTAMP'
+NUM_DAYS_KEEP=3 # Only used with TIMESTAMP backups
 BACKUP="" # Do not edit unless you know what you are doing
 
 # EG: lgsm_(Monday|Tuesday|...|Sunday).tar.gz
