@@ -35,10 +35,10 @@ CleanUp() {
   if IsFileTypeDay; then 
     if [ -f "${BACKUP}" ]; then # Remove existing DAY file
       echo "Existing backup detected.  Removing."
-      rm -v "${BACKUP}"
+      rm -fv "${BACKUP}"
     fi
   else # Remove older TimeStamp based backups
-    find "$BACKUP_PATH" -name "*.tar.gz" -type f -mtime +$NUM_DAYS_KEEP -print0 | xargs -r -0 rm -v
+    find "$BACKUP_PATH" -name "*.tar.gz" -type f -mtime +$NUM_DAYS_KEEP -print0 | xargs -r -0 rm -fv
   fi
 }
 
