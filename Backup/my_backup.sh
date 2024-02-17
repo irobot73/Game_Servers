@@ -50,6 +50,8 @@ Setup() {
   fi
 }
 
+echo
+
 Setup
 CleanUp
 
