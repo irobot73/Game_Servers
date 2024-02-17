@@ -6,6 +6,10 @@
 /data/backup/
 /data/data/
 /data/log/
+/data/RCON/*.tar.gz
+/data/RCON/CHANGELOG.md
+/data/RCON/LICENSE_*
+/data/RCON/README.md
 /data/serverfiles/
 /data/.config/
 /data/.local/
