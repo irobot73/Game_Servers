@@ -10,13 +10,15 @@ BACKUP="" # Do not edit unless you know what you are doing
 
 # EG: lgsm_(Monday|Tuesday|...|Sunday).tar.gz
 UseDayNamesForFiles() {
-  local backupfilename=lgsm_$(date -d "today" +"%A").tar.gz
+  local backupfilename
+  backupfilename=lgsm_$(date -d "today" +"%A").tar.gz
   BACKUP="${BACKUP_PATH}/${backupfilename}"
 }
 
 # EG: lgsm_20240201_062111.tar.gz
 UseTimestampForFiles() {
-  local backupfilename=lgsm_$(date +%Y%m%d_%H%M%S).tar.gz
+  local backupfilename
+  backupfilename=lgsm_$(date +%Y%m%d_%H%M%S).tar.gz
   BACKUP="${BACKUP_PATH}/${backupfilename}"
 }
 
@@ -36,7 +38,7 @@ CleanUp() {
       rm -v "${BACKUP}"
     fi
   else # Remove older TimeStamp based backups
-    find "$BACKUP_PATH" -name "*.tar.gz" -type f -mtime +$NUM_DAYS_KEEP | xargs rm -v -r
+    find "$BACKUP_PATH" -name "*.tar.gz" -type f -mtime +$NUM_DAYS_KEEP -print0 | xargs -r -0 rm -v
   fi
 }
 
