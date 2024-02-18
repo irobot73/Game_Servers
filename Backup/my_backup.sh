@@ -5,7 +5,11 @@
 BACKUP_PATH=/data/backup
 FILE_TYPE="D" # Use '(D)AY' or '(T)IMESTAMP'
 NUM_DAYS_KEEP=3 # Only used with TIMESTAMP backups
-BACKUP="" # Do not edit unless you know what you are doing
+EXCLUDE_FILE="/data/bkup_exclude.txt"
+INCLUDE_FILE="/data/bkup_include.txt"
+# Do not edit unless you know what you are doing
+BACKUP=""
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
 IsFileTypeDay() {
     local pat="^(d|D)"    
@@ -37,15 +41,35 @@ CleanUp() {
   fi
 }
 
+Backup() {
+    local exclude_param
+    exclude_param=""
+    local include_param
+    include_param=""
+    
+    if [ -f "$EXCLUDE_FILE" ]; then
+        exclude_param="-X ${EXCLUDE_FILE}"
+    fi
+
+    if [ -f "$INCLUDE_FILE" ]; then
+        include_param="-T ${INCLUDE_FILE}"
+    fi
+
+    tar -czf "${BACKUP}" -C / ${exclude_param} ${include_param}
+    
+    return $?
+}
+
 # Gives some head read to more easily read in output (log+)
 echo
 
 GenerateBackupFileName
 CleanUp
 
+# Do work
 echo "Creating backup: '${BACKUP}'"
 
-tar -czf "${BACKUP}" -C / -X /data/bkup_exclude.txt -T /data/bkup_include.txt
-exitcode=$?
+exitcode=$(Backup)
 
+# Give final status
 echo "Finished.  Exit Code: ${exitcode}, Size $(du -sh "${BACKUP}" | awk '{print $1}')"
