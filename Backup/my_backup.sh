@@ -1,34 +1,29 @@
 #!/bin/bash
 
-#set -x
-#shopt -s extglob # enabled for extended pattern matching operators to be recognised.
+#set -x # Enable to DEBUG
 
 BACKUP_PATH=/data/backup
 FILE_TYPE="D" # Use '(D)AY' or '(T)IMESTAMP'
 NUM_DAYS_KEEP=3 # Only used with TIMESTAMP backups
 BACKUP="" # Do not edit unless you know what you are doing
 
-# EG: lgsm_(Monday|Tuesday|...|Sunday).tar.gz
-UseDayNamesForFiles() {
-  local backupfilename
-  backupfilename=lgsm_$(date -d "today" +"%A").tar.gz
-  BACKUP="${BACKUP_PATH}/${backupfilename}"
-}
-
-# EG: lgsm_20240201_062111.tar.gz
-UseTimestampForFiles() {
-  local backupfilename
-  backupfilename=lgsm_$(date +%Y%m%d_%H%M%S).tar.gz
-  BACKUP="${BACKUP_PATH}/${backupfilename}"
-}
-
 IsFileTypeDay() {
-    local pat="^(d|D)"
+    local pat="^(d|D)"    
     if [[ "$FILE_TYPE" =~ $pat ]]; then
         return 0 # true
     else 
         return 1 # false
     fi
+}
+
+GenerateBackupFileName() {
+  local backupfilename  
+  if IsFileTypeDay; then
+    backupfilename=lgsm_$(date -d "today" +"%A").tar.gz
+  else
+    backupfilename=lgsm_$(date +%Y%m%d_%H%M%S).tar.gz
+  fi  
+  BACKUP="${BACKUP_PATH}/${backupfilename}"
 }
 
 CleanUp() {
@@ -42,17 +37,10 @@ CleanUp() {
   fi
 }
 
-Setup() {
-  if IsFileTypeDay; then
-    UseDayNamesForFiles
-  else
-    UseTimestampForFiles
-  fi
-}
-
+# Gives some head read to more easily read in output (log+)
 echo
 
-Setup
+GenerateBackupFileName
 CleanUp
 
 echo "Creating backup: '${BACKUP}'"
