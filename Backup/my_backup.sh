@@ -1,19 +1,22 @@
 #!/bin/bash
+# https://github.com/irobot73/LGSM
 
 #set -x # Enable to DEBUG
 
-BACKUP_PATH=/data/backup
-FILE_TYPE="T" # Use '(D)AY' or '(T)IMESTAMP'
-NUM_DAYS_KEEP=3 # Only used with TIMESTAMP backups
-EXCLUDE_FILE="/data/bkup_exclude.txt"
-INCLUDE_FILE="/data/bkup_include.txt"
-# Do not edit unless you know what you are doing
+# WARNING:  Do not edit unless you know what you are doing
 BACKUP=""
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 # Defaults if/when the EXCLUDE file is empty/missing
-EXCLUDE_PARAM_DEFAULTS="--exclude=backup --exclude=lgsm --exclude=log --exclude=steamapps --exclude='.*' --exclude='*.lock'"
+EXCLUDE_PARAM_DEFAULTS=( "backup" "lgsm" "log" "steamapps" "*.lock" ".*" )
 # Defaults if/when the INCLUDE file is empty/missing
-INCLUDE_PARAM_DEFAULTS="/data /app"
+INCLUDE_PARAM_DEFAULTS=( "/data" "/app" )
+
+# Change the following as needed
+BACKUP_PATH=/data/backup
+FILE_TYPE="T" # Use '(D)AY' or '(T)IMESTAMP'
+NUM_DAYS_KEEP=3 # Only used with TIMESTAMP backups
+EXCLUDE_FILE="${DIR}/bkup_exclude.txt"
+INCLUDE_FILE="${DIR}/bkup_include.txt"
 
 IsFileTypeDay() {
     local pat="^(d|D)"
@@ -46,27 +49,17 @@ CleanUp() {
 }
 
 Backup() {
-    local exclude_param
-    exclude_param=""
-    local include_param
-    include_param=""
-
-    # Check if the file(s) exist & have a file size
-    if [[ -f $EXCLUDE_FILE && -s $EXCLUDE_FILE ]]; then
-        exclude_param="-X ${EXCLUDE_FILE}"
-    else
-        exclude_param=$EXCLUDE_PARAM_DEFAULTS
+    if ! [[ -f $EXCLUDE_FILE && -s $EXCLUDE_FILE ]]; then        
+        touch "${EXCLUDE_FILE}"
+        printf '%s\n' "${EXCLUDE_PARAM_DEFAULTS[@]}" >> "${EXCLUDE_FILE}"
     fi
 
-    #  If invalid, we'll make it so the backup doesn't start at the root level
-    if [[ -f $INCLUDE_FILE && -s $INCLUDE_FILE ]]; then
-        include_param="-T ${INCLUDE_FILE}"
-    else
-        include_param=$INCLUDE_PARAM_DEFAULTS
+    if ! [[ -f $INCLUDE_FILE && -s $INCLUDE_FILE ]]; then
+        touch "${INCLUDE_FILE}"
+        printf '%s\n' "${INCLUDE_PARAM_DEFAULTS[@]}" >> "${INCLUDE_FILE}"
     fi
 
-
-    tar -czf "${BACKUP}" -C . --exclude-vcs --ignore-failed-read ${exclude_param} ${include_param} .
+    tar -czf "${BACKUP}" -C . --exclude-vcs --ignore-failed-read -X "${EXCLUDE_FILE}" -T "${INCLUDE_FILE}" .
 
     echo $?
 }
