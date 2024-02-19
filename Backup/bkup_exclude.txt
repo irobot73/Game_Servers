@@ -1,3 +1,5 @@
+.
+
 /app/lgsm/backup/
 /app/log/
 /app/lock/
