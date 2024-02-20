@@ -1,6 +1,8 @@
 #!/bin/bash
 # https://github.com/irobot73/LGSM
 
+# NO TOUCHY next line
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 #set -x # Enable to DEBUG
 
 # Change the following as needed
@@ -12,7 +14,6 @@ INCLUDE_FILE="${DIR}/bkup_include.txt"
 
 # WARNING:  Do not edit unless you know what you are doing
 BACKUP=""
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 # Defaults if/when the EXCLUDE file is empty/missing
 EXCLUDE_PARAM_DEFAULTS=("backup" "lgsm" "log" "steamapps" "*.lock" ".*")
 # Defaults if/when the INCLUDE file is empty/missing
@@ -71,6 +72,7 @@ Backup() {
     echo "Creating backup: '${BACKUP}'"
 
     tar -czf "${BACKUP}" -C . --exclude-vcs --ignore-failed-read -X "${EXCLUDE_FILE}" -T "${INCLUDE_FILE}" .
+
     exitcode=$?
 
     error_result="Backup failed.  Exit code: '$exitcode'"
