@@ -12,6 +12,8 @@ Scripts to assist running LGSM dedicated servers
 
   **CRON Example:**
 
+      ## https://crontab.guru/ [to create/verify]
+      #
       ## Every SUN @ 00:00 - Make sure to create [TOUCH] before using via redirect
       0 0 * * 0 /usr/bin/truncate --size 0 /data/log/crontab.log
       ## Every 30-mins past every 6th hour [00:30, 06:30, 12:30, 18:30] & log to 'crontab.log'
