@@ -14,8 +14,8 @@ Scripts to assist running LGSM dedicated servers
 
       ## EVERY SUN @ 00:00 - Make sure to create [TOUCH] before using via redirect
       0 0 * * 0 /usr/bin/truncate --size 0 /data/log/crontab.log
-      ## Execute every 6-hrs & log to 'crontab.log'
-      1 */6 * * * /data/my_backup.sh >> /data/log/crontab.log 2>&1
+      ## Execute every 30-min past every 6th hour [00:30, 06:30, 12:30, 18:30] & log to 'crontab.log'
+      30 */6 * * * /data/my_backup.sh >> /data/log/crontab.log 2>&1
 
 <b>Come test 'em out (all details via Discord):</b>
 
