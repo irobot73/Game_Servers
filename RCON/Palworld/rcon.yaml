@@ -1,0 +1,12 @@
+default:
+  address: "" # host:port, for example 127.0.0.1:16260
+  password: ""
+  log: "rcon-default.log"
+  type: "" # rcon, telnet, web.
+  timeout: "10s"
+palworld:
+  address: "127.0.0.1:8213"
+  password: "{password}"
+  log: "/data/log/rcon.log"
+  type: "rcon"
+  timeout: "10s"
