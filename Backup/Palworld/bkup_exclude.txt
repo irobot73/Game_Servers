@@ -13,6 +13,7 @@
 /data/RCON/LICENSE_*
 /data/RCON/README.md
 /data/serverfiles/
+/data/serverfiles/Pal/Saved/SaveGames/0/*/backup
 /data/.config/
 /data/.local/
 /data/.selected_editor
