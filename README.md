@@ -1,3 +1,7 @@
+# Palworld
+
+Scripts to assist running a dedicated (Windows) Palworld server
+
 # LGSM
 
 Scripts to assist running LGSM dedicated servers
