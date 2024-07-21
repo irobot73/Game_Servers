@@ -56,11 +56,11 @@ REM Run backup at start-up and every {X} 'backupIntervalMinutes
 set /a "remainder=%svrUpTime% %% %bkupIntervalSeconds%"
 if %svrUpTime% == 0 (
     echo [%DATE% %TIME%] ...Backup requested.
-    START /MIN cmd /c ".\BACKUP.bat"
+    START /MIN cmd /c ".\PW_BACKUP.bat"
 ) else (
     if %remainder% == 0 (
 	    echo [%DATE% %TIME%] ...Backup requested.
-        START /MIN cmd /c ".\BACKUP.bat"
+        START /MIN cmd /c ".\PW_BACKUP.bat"
     )
 )
 
