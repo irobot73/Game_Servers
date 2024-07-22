@@ -58,7 +58,7 @@ if %svrUpTime% == 0 (
     START /MIN cmd /c ".\PW_BACKUP.bat"
 ) else (
     if %remainder% == 0 (
-	    echo [%DATE% %TIME%] ...Backup requested.
+	echo [%DATE% %TIME%] ...Backup requested.
         START /MIN cmd /c ".\PW_BACKUP.bat"
     )
 )
