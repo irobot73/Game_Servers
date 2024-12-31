@@ -16,7 +16,6 @@ REM ******************
 
 set "svrCheckIntervalMinutes=3"
 set "bkupIntervalMinutes=30"
-set "backupIntervalMinutes=30"
 set "palworldServer=D:\palworld_svr\PalServer.exe"
 set "serverParameters=-useperfthreads -NoAsyncLoadingThread -UseMultithreadForDS -publiclobby -log -publicip=%ExtIP% -bIsUseBackupSaveData=True -ServerName=^"HELLO^" -port=8211 -players=21 -ServerDescription=^"DESCRIPTION^" -AdminPassword=^"PASSWORD^" -PublicPort=8211 -RCONEnabled=True -RCONPort=8215 -Region=^"NA^" -bUseAuth=True"
 REM ******
@@ -50,16 +49,18 @@ if %errorlevel% neq 0 (
     echo [%DATE% %TIME%] Server running normally.
 )
 
-REM Run backup at start-up and every {X} 'backupIntervalMinutes
+REM Run backup at start-up and every {X} 'bkupIntervalMinutes'
 :backup
 set /a "remainder=%svrUpTime% %% %bkupIntervalSeconds%"
 if %svrUpTime% == 0 (
-    echo [%DATE% %TIME%] ...Backup requested.
-    START /MIN cmd /c ".\PW_BACKUP.bat"
+    echo [%DATE% %TIME%] ...Backup started.
+    call ".\PW_BACKUP.bat"
+    echo ......Status: %backupStatus%
 ) else (
     if %remainder% == 0 (
-	echo [%DATE% %TIME%] ...Backup requested.
-        START /MIN cmd /c ".\PW_BACKUP.bat"
+	echo [%DATE% %TIME%] ...Backup started.
+        call ".\PW_BACKUP.bat"
+        echo ......%backupStatus%
     )
 )
 
