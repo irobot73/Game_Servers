@@ -60,7 +60,7 @@ if %svrUpTime% == 0 (
     if %remainder% == 0 (
 	echo [%DATE% %TIME%] ...Backup started.
         call ".\PW_BACKUP.bat"
-        echo ......%backupStatus%
+        echo ......Status: %backupStatus%
     )
 )
 
