@@ -12,6 +12,7 @@ REM ******************
 set "backupFolder=.\backup"
 set "numberBackupDaysToKeep=10"
 set "winrarPath=C:\Program Files\WinRAR\rar.exe"
+set "backupStatus=** FAILED **"
 
 :do_backup
 REM  Ensure the server is still running
@@ -33,15 +34,12 @@ set "timestamp=!datetime:~0,4!_!datetime:~4,2!_!datetime:~6,2!-!datetime:~8,2!_!
 set "backupName=%backupFolder%\Backup_%timestamp%.RAR"
 
 REM Create RAR, exluding all but the CONFIG & SAVE folders/files
-"%winrarPath%" a -r -ep1 -m5 -x*\Crashes\* -x*\Crashes\ -x*\ImGui\* -x*\ImGui\ -x*\Logs\* -x*\Logs\ -x*\Config\CrashReportClient\* -x*\Config\CrashReportClient\ -x*\SaveGames\0\*\backup\ "!backupName!" ".\Pal\Saved\*"
+"%winrarPath%" a -r -ep1 -m5 -t -x*\Crashes\* -x*\Crashes\ -x*\ImGui\* -x*\ImGui\ -x*\Logs\* -x*\Logs\ -x*\Config\CrashReportClient\* -x*\Config\CrashReportClient\ -x*\SaveGames\0\*\backup\ "!backupName!" ".\Pal\Saved\*"
+set backupExitCode=%ERRORLEVEL%
 
-IF EXIST "%backupName%" (
-    ECHO Backup successful.
-) ELSE (
-    ECHO Backup FAILED.
+endlocal
+IF %backupExitCode% EQ 0 (
+    set backupStatus=success
 )
-
-REM Give some time to allow what's been going on
-timeout /t 30 /nobreak > NUL 2>&1
 
 EXIT /B
