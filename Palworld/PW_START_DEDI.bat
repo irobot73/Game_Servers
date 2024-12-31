@@ -55,12 +55,12 @@ set /a "remainder=%svrUpTime% %% %bkupIntervalSeconds%"
 if %svrUpTime% == 0 (
     echo [%DATE% %TIME%] ...Backup started.
     call ".\PW_BACKUP.bat"
-    echo [%DATE% %TIME%] ......Status: %backupStatus%
+    echo [%DATE% %TIME%] ......Backup: %backupStatus%
 ) else (
     if %remainder% == 0 (
 	echo [%DATE% %TIME%] ...Backup started.
         call ".\PW_BACKUP.bat"
-        echo [%DATE% %TIME%] ......Status: %backupStatus%
+        echo [%DATE% %TIME%] ......Backup: %backupStatus%
     )
 )
 
